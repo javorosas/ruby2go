@@ -22,7 +22,7 @@ NOTE: package manager's install command is replaced with the generic word 'pack'
     pack curl
     pack build-essential
 
-    // rvm requirements
+    # rvm requirements
     pack zlib1g-dev
     pack libyaml-dev
     pack libsqlite3-dev
@@ -42,4 +42,4 @@ NOTE: package manager's install command is replaced with the generic word 'pack'
     rvm use 1.9.3 –default
     gem intall execjs
 
-    // TODO: Generate scaffolding / bundle install, etc
+    # TODO: Generate scaffolding / bundle install, etc
