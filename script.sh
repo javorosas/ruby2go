@@ -26,11 +26,9 @@ else
     exit 2
 fi
 
-
-
-#################################################
+##################################################
 ### Functions for installation of requirements ###
-#################################################
+##################################################
 
 # Checks if a command exits: Returns 1 if the command exits
 isInstalled(){
@@ -48,11 +46,33 @@ install(){
     fi
 }
 
-####################################
-### Installation of requirements ###
-####################################
+####################
+### Installation ###
+####################
 
 install "curl"
 install "git"
+
+# TODO: Change the following with rvm requirements
+install "zlib1g-dev"
+install "libyaml-dev"
+install "libsqlite3-dev"
+
+install "nodejs"
+
+# Install RVM with curl
+curl -L get.rvm.io | bash -s stable
+
+source $HOME/.rvm/scripts/rvm
+
+rvm pkg install openssl
+rvm install 1.9.3 –with-openssl-dir=$HOME/.rvm/usr
+
+gem install rails
+
+rvm use 1.9.3 –default
+gem intall execjs
+
+# TODO: Generate scaffolding / bundle install, etc
 
 echo -e "Great, you've got everything installed. Happy Coding." #Print logo
