@@ -7,13 +7,13 @@ Easily set up your ruby dev environment on GNU/Linux.
 This tool is scoped for fresh ruby developers.
 
 ## Project stages
-| Done | Stage |                       Description                       | Planned date | Released |
-|------|-------|---------------------------------------------------------|--------------|----------|
-|      |     1 | Bash script to install ruby+rails                       | 2013/jan/11  |          |
+| Done | Stage |                           Description                           | Planned date | Released |
+|------|-------|-----------------------------------------------------------------|--------------|----------|
+|      |     1 | Bash script to install ruby+rails                               | 2013/jan/11  |          |
 |      |     2 | Same script asks the user whether to install ruby or ruby+rails | 2013/jan/18  |          |
-|      |     3 | Generate "hello world" scaffolding when finished        |              |          |
-|      |     4 | Client-side web app that generates custom script        |              |          |
-|      |     5 | Same app generates rpm/deb package                      |              |          |
+|      |     3 | Generate "hello world" scaffolding when finished                |              |          |
+|      |     4 | Client-side web app that generates custom script                |              |          |
+|      |     5 | Same app generates rpm/deb package                              |              |          |
 
 ## Installation list
 NOTE: package manager's install command is replaced with the generic word 'pack'
