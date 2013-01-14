@@ -9,7 +9,7 @@ This tool is scoped for fresh ruby developers.
 ## Project stages
 | Done | Stage |                           Description                           | Planned date | Released |
 |------|-------|-----------------------------------------------------------------|--------------|----------|
-|      |     1 | Bash script to install ruby+rails                               | 2013/jan/11  |          |
+| X    |     1 | Bash script to install ruby+rails                               | 2013/jan/11  |          |
 |      |     2 | Same script asks the user whether to install ruby or ruby+rails | 2013/jan/18  |          |
 |      |     3 | Generate "hello world" scaffolding when finished                |              |          |
 |      |     4 | Client-side web app that generates custom script                |              |          |
@@ -40,6 +40,6 @@ NOTE: package manager's install command is replaced with the generic word 'pack'
     gem install rails
 
     rvm use 1.9.3 –default
-    gem intall execjs
+    gem install execjs
 
     # TODO: Generate scaffolding / bundle install, etc

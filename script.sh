@@ -18,9 +18,9 @@ assignPacMan() {
 }
 
 # The package manager instalation command string is stored in the 'pack' variable
-if haveProg apt-get ; then pack="apt-get install -y"
-elif haveProg yum ; then pack="yum install"
-elif haveProg pacman ; then pack="pacman -S"
+if haveProg apt-get ; then pack="sudo apt-get install -y"
+elif haveProg yum ; then pack="sudo yum install"
+elif haveProg pacman ; then pack="sudo pacman -S"
 else
     echo 'No package manager found!'
     exit 2
@@ -66,12 +66,12 @@ curl -L get.rvm.io | bash -s stable
 source $HOME/.rvm/scripts/rvm
 
 rvm pkg install openssl
-rvm install 1.9.3 –with-openssl-dir=$HOME/.rvm/usr
+rvm install 1.9.3 --with-openssl-dir=$HOME/.rvm/usr
 
 gem install rails
 
-rvm use 1.9.3 –default
-gem intall execjs
+rvm use 1.9.3 --default
+gem install execjs
 
 # TODO: Generate scaffolding / bundle install, etc
 
