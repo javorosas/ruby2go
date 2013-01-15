@@ -2,6 +2,12 @@
 # Nearsoft, Inc.
 # Nearsoft Labs
 
+# Make sure this script is not being executed as root
+if [ "$(id -u)" == "0" ]; then
+   echo "Don't run this script as root." 1>&2
+   exit 1
+fi
+
 echo -e "\e[1;37mWelcome to Ruby2Go: The best way to install Ruby.\e[0m"    #Print logo
 
 #########################################
