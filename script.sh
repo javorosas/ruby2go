@@ -44,7 +44,7 @@ do
                 echo "Using Rails $2"
             fi
             shift 2;;
-            
+
         -n|--no-gems)
                 gems=false
             shift;;
@@ -54,6 +54,7 @@ do
 
     esac
 done
+
 
 
 #######################################################3
