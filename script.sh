@@ -2,18 +2,16 @@
 # Nearsoft, Inc.
 # Nearsoft Labs
 
-
 ####################################################
 #####################################################
 
-
 # Execute getopt on the arguments passed to this program, identified by the special character $@
-PARSED_OPTIONS=$(getopt -n "$0"  -o hr: --long "help,ruby:"  -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0"  -o hr:l:n --long "help,ruby:,rails:,no-gems"  -- "$@")
  
 #Bad arguments, something has gone wrong with the getopt command.
 if [ $? -ne 0 ];
 then
-  exit 1
+    exit 1
 fi
  
 # A little magic, necessary when using getopt.
@@ -24,36 +22,42 @@ eval set -- "$PARSED_OPTIONS"
 #$1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
 while true;
 do
-  case "$1" in
- 
-    -h|--help)
-      echo "Usage $0 -r or $0 --ruby"
-      exit 1
-     shift;;
- 
-    -r|--ruby)
-      
-      # We need to take the option of the argument "ruby"
-      if [ -n "$2" ];
-      then
-        ruby-v = $2
-      fi
-      shift 2;;
- 
-    --)
-      shift
-      break;;
-  esac
+    case "$1" in
+        -h|--help)
+            echo "Usage $0 -r or $0 --ruby"
+            exit 1
+            shift;;
+
+        -r|--ruby)
+            # We need to take the option of the argument "ruby"
+            if [ -n "$2" ];
+            then
+                ruby-v=$2
+                echo "Using Ruby $2"
+            fi
+            shift 2;;
+
+        -l|--rails)
+            if [ -n "$2" ];
+            then
+                rails-v=$2
+                echo "Using Rails $2"
+            fi
+            shift 2;;
+            
+        -n|--no-gems)
+                gems=false
+            shift;;
+        --)
+          shift
+          break;;
+
+    esac
 done
 
 
-
-
-
-
 #######################################################3
 #######################################################3
-
 
 
 # Make sure this script is not being executed as root
