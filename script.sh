@@ -28,12 +28,12 @@ fi
 eval set -- "$PARSED_OPTIONS"
  
 install_example=true
- 
+
 # Now goes through all the options with a case and using shift to analyse 1 argument at a time.
 #$1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
 while true;
 do
-    case "$1" 
+    case "$1" in
         -h|--help)
             echo "Usage $0 -r or $0 --ruby"
             exit 1
@@ -63,12 +63,13 @@ do
                 install_example=false
             shift;;
         -g|--gem)
-            if [ -n "$2" ];
-            then
+            if [ -n "$2" ]; then
                 gems="$gems $2"
-            ;;
+            fi
+            shift;;
         --)
-          shift
+          echo "Usage $0 -r or $0 --ruby"
+          exit 1
           break;;
 
     esac
