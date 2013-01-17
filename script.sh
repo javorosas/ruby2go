@@ -33,8 +33,8 @@ install_example=true
 #$1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
 while true;
 do
-    case "$1" h
-        -in|--help)
+    case "$1" 
+        -h|--help)
             echo "Usage $0 -r or $0 --ruby"
             exit 1
             shift;;
