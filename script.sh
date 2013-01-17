@@ -15,8 +15,14 @@ case $OSTYPE in
         ;;
 esac
 
+
+function installGems() {
+    echo "Installing gems $gems" 
+    sudo gem install $1
+}
+
 # Execute getopt on the arguments passed to this program, identified by the special character $@
-PARSED_OPTIONS=$(getopt -n "$0"  -o hr:l:nx --long "help,ruby:,rails:,no-gems,vim,gvim,qvim,vim-plugins,emacs,no-example"  -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0"  -o hr:l:nxg: --long "help,ruby:,rails:,no-gems,vim,gvim,qvim,vim-plugins,emacs,no-example,gem"  -- "$@")
  
 #Bad arguments, something has gone wrong with the getopt command.
 if [ $? -ne 0 ];
@@ -27,7 +33,7 @@ fi
 # A little magic, necessary when using getopt.
 eval set -- "$PARSED_OPTIONS"
  
-install_example=true
+install_example=false
 
 # Now goes through all the options with a case and using shift to analyse 1 argument at a time.
 #$1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
@@ -37,13 +43,13 @@ do
         -h|--help)
             echo "Usage $0 -r or $0 --ruby"
             exit 1
-            shift;;
+            shift;; 
 
         -r|--ruby)
             # We need to take the option of the argument "ruby"
             if [ -n "$2" ];
             then
-                ruby-v=$2
+                ruby_v=$2
                 # echo "Using Ruby $2"
             fi
             shift 2;;
@@ -51,7 +57,7 @@ do
         -l|--rails)
             if [ -n "$2" ];
             then
-                rails-v=$2
+                rails_v=$2
                 # echo "Using Rails $2"
             fi
             shift 2;;
@@ -59,19 +65,17 @@ do
         -n|--no-gems)
                 gems=false
             shift;;
-        -x|--no-example)
-                install_example=false
+        -x|--example)
+                install_example=true
             shift;;
         -g|--gem)
             if [ -n "$2" ]; then
                 gems="$gems $2"
             fi
-            shift;;
+            shift 2;;
         --)
-          echo "Usage $0 -r or $0 --ruby"
-          exit 1
-          break;;
-
+            shift
+            break;;
     esac
 done
 
@@ -88,7 +92,7 @@ fi
 
 echo -e "\e[1;37mWelcome to Ruby2Go: The best way to install Ruby.\e[0m"    #Print logo
 
-if [ os == "linux" ]; then
+if [ $os == "linux" ]; then
     #########################################
     ### Choose the proper package manager ###
     #########################################
@@ -162,13 +166,8 @@ if [ os == "linux" ]; then
     $pack $rvm_dependencies
 
     rvm pkg install openssl
-    rvm install $ruby-v --with-openssl-dir=$HOME/.rvm/usr
 
-    gem install rails
-
-    rvm use $ruby-v --default
-    gem install execjs
-elif [ os == "mac" ]; then
+elif [ $os == "mac" ]; then
     # TODO: Explain user what are we doing
     # Install RVM
     bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
@@ -176,14 +175,18 @@ elif [ os == "mac" ]; then
     # Load RVM to shell session/
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-    rvm install ruby-v
 
-    rvm use ruby-v
-
-    if [ gems == true ]; then
-        gem install rails --version=rails-v
-    fi
 fi
 # TODO: Generate scaffolding / bundle install, etc
+ 
+rvm install $ruby_v --with-openssl-dir=$HOME/.rvm/usr
+rvm use $ruby_v --default
+
+$gems="execjs $gems"
+if [[ ${rails,,} != "no" ]]; then
+    $gems="rails $gems"
+fi
+
+installGems $gems
 
 echo -e "Great, you've got everything installed. Happy Coding." #Print logo
