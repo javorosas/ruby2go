@@ -21,6 +21,10 @@ function installGems() {
     sudo gem install $1
 }
 
+function toLower() {
+    echo $1 | tr "[:upper:]" "[:lower:]"
+}
+
 # Execute getopt on the arguments passed to this program, identified by the special character $@
 PARSED_OPTIONS=$(getopt -n "$0"  -o hr:l:nxg: --long "help,ruby:,rails:,no-gems,vim,gvim,qvim,vim-plugins,emacs,no-example,gem"  -- "$@")
  
@@ -34,6 +38,7 @@ fi
 eval set -- "$PARSED_OPTIONS"
  
 install_example=false
+ruby_v=1.9.3 # default ruby version
 
 # Now goes through all the options with a case and using shift to analyse 1 argument at a time.
 #$1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
@@ -175,16 +180,17 @@ elif [ $os == "mac" ]; then
     # Load RVM to shell session/
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
-
 fi
 # TODO: Generate scaffolding / bundle install, etc
  
 rvm install $ruby_v --with-openssl-dir=$HOME/.rvm/usr
 rvm use $ruby_v --default
 
-$gems="execjs $gems"
-if [[ ${rails,,} != "no" ]]; then
-    $gems="rails $gems"
+rails=`toLower $rails`
+
+gems="execjs $gems"
+if [[ $rails != "no" ]]; then
+    gems="rails $gems"
 fi
 
 installGems $gems
