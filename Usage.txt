@@ -1,0 +1,13 @@
+Usage: ruby2go [options [argument]...]
+i.e.:
+	   ruby2go --ruby 1.9.3 --gem devise --gem pg
+
+Options:
+ -g, --gem GEM			Installs the specified gem at the end of the script
+ -h, --help				This help text
+ -n, --no-gems			Do not install any gem (nor rails)
+ -R, --rails VERSION 	Specify what version of Rails will be installed
+ -r, --ruby VERSION		Specify what version of ruby will be installed
+ -s, --sample			Download the sample app when installation is complete
+ 	 --vim-plugins		Install suggested vim plugins for Ruby on Rails development
+ 	 

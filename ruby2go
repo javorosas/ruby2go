@@ -26,7 +26,7 @@ function toLower() {
 }
 
 # Execute getopt on the arguments passed to this program, identified by the special character $@
-PARSED_OPTIONS=$(getopt -n "$0"  -o hr:l:nxg: --long "help,ruby:,rails:,no-gems,vim,gvim,qvim,vim-plugins,emacs,no-example,gem"  -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0"  -o hr:R:nxg: --long "help,ruby:,rails:,no-gems,vim-plugins,sample,gem:"  -- "$@")
  
 #Bad arguments, something has gone wrong with the getopt command.
 if [ $? -ne 0 ];
@@ -37,6 +37,7 @@ fi
 # A little magic, necessary when using getopt.
 eval set -- "$PARSED_OPTIONS"
  
+# Initialize some variables with their defaults.
 install_example=false
 ruby_v=1.9.3 # default ruby version
 
@@ -46,7 +47,26 @@ while true;
 do
     case "$1" in
         -h|--help)
-            echo "Usage $0 -r or $0 --ruby"
+            echo ""
+            echo "#############"
+            echo "## ruby2go ##"
+            echo "#############"
+            echo ""
+            echo "Easily set up your ruby dev environment on GNU/Linux and Mac."
+            echo ""
+            echo "Usage: ./ruby2go [options [argument]...]"
+            echo "i.e.:  ./ruby2go --ruby 1.9.3 --gem devise --gem pg"
+            echo ""
+            echo "Options:"
+            echo " -g, --gem GEM          Installs the specified gem at the end of the script"
+            echo " -h, --help             Show this help text"
+            echo " -n, --no-gems          Do not install any gem (nor rails)"
+            echo " -R, --rails VERSION    Specify what version of Rails will be installed"
+            echo " -r, --ruby VERSION     Specify what version of ruby will be installed"
+            echo " -s, --sample           Download the sample app when installation is complete"
+            echo "     --vim-plugins      Install suggested vim plugins for Ruby on Rails development"
+     
+
             exit 1
             shift;; 
 

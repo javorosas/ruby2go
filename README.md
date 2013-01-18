@@ -1,26 +1,30 @@
 ruby2go
 =======
 
-Easily set up your ruby dev environment on GNU/Linux.
+Easily set up your ruby dev environment on GNU/Linux and Mac.
 
-## Considerations
-This tool is scoped for fresh ruby developers.
+# Basic installation
+To install Ruby + Rails environment, open your terminal and type the following:
+	
+	mkdir ruby2go
+	cd ruby2go
+	wget https://bitbucket.org/nslabs/ruby2go/downloads/ruby2go
+	sudo chmod +x ruby2go
+	./ruby2go
 
-## Project stages
-| Done | Stage |                        Description                         | Planned date |   Released  |
-|------|-------|------------------------------------------------------------|--------------|-------------|
-| X    |     1 | Bash script to install ruby+rails                          | 2013/jan/11  | 2013/jan/11 |
-|      |     2 | Same script lets you configure versions, tools and plugins | 2013/jan/18  |             |
+# Configure your installation
+You can either execute this script as shown above to install the most common packages for your environment, or customize your installation typing the following options
 
+	Usage: ./ruby2go [options [argument]...]
+	i.e.:  ./ruby2go --ruby 1.9.3 --gem devise --gem pg
 
-## Configure options
-### Usage
+	Options:
+	 -g, --gem GEM          Installs the specified gem at the end of the script
+	 -h, --help             Show this help text
+	 -n, --no-gems          Do not install any gem (nor rails)
+	 -R, --rails VERSION    Specify what version of Rails will be installed
+	 -r, --ruby VERSION     Specify what version of ruby will be installed
+	 -s, --sample           Download the sample app when installation is complete
+	     --vim-plugins      Install suggested vim plugins for Ruby on Rails development
 
-|     Option     |  Argument |       Description       |
-|----------------|-----------|-------------------------|
-| --ruby         | [version] | specify ruby version    |
-| --rails        | [version] | specify rails version   |
-| --without-gems |           | don't install any gem   |
-| --dot-vim      |           | install dotfile for vim |
-|                |           |                         |
-
+Welcome aboard and happy coding!
