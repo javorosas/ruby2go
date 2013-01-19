@@ -38,7 +38,7 @@ fi
 eval set -- "$PARSED_OPTIONS"
  
 # Initialize some variables with their defaults.
-install_example=false
+install_sample=false
 ruby_v=1.9.3 # default ruby version
 
 # Now goes through all the options with a case and using shift to analyse 1 argument at a time.
@@ -90,8 +90,8 @@ do
         -n|--no-gems)
                 gems=false
             shift;;
-        -x|--example)
-                install_example=true
+        -s|--sample)
+                install_sample=true
             shift;;
         -g|--gem)
             if [ -n "$2" ]; then
@@ -103,7 +103,6 @@ do
             break;;
     esac
 done
-
 
 #######################################################3
 #######################################################3
@@ -193,12 +192,28 @@ if [ $os == "linux" ]; then
     rvm pkg install openssl
 
 elif [ $os == "mac" ]; then
-    # TODO: Explain user what are we doing
-    # Install RVM
-    bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+    echo "Installing Homebrew ..."
+    ruby <(curl -fsS https://raw.github.com/mxcl/homebrew/go)
+    brew update
 
-    # Load RVM to shell session/
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+    # Putting Homebrew to PATH
+    echo "export PATH='/usr/local/bin:$PATH'" >> ~/.zshenv
+    source ~/.zshenv
+
+    # Installing GNU compiler collection and dependencies
+    brew tap homebrew/dupes
+    brew install autoconf automake apple-gcc42
+
+    brew install libksba
+
+    # Install RVM
+    curl -L https://get.rvm.io | bash -s stable
+
+    # Show RVM version
+    rvm --version
+    rvm use $ruby_v
+    rvm --default $ruby_v
+    rvm default 
 
 fi
 # TODO: Generate scaffolding / bundle install, etc
@@ -213,6 +228,19 @@ if [[ $rails != "no" ]]; then
     gems="rails $gems"
 fi
 
-installGems $gems
+if [[ $gems != false ]]; then 
+    installGems $gems
+fi
+
+if [[ install_sample == true ]]; then
+    git clone https://github.com/Nearsoft/pawnil.git
+    bundle install --without production
+
+    cd pawnil
+    rake db:migrate
+
+fi
+
+
 
 echo -e "Great, you've got everything installed. Happy Coding." #Print logo
