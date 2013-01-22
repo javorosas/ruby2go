@@ -15,7 +15,6 @@ case $OSTYPE in
         ;;
 esac
 
-
 function installGems() {
     echo "Installing gems $gems" 
     sudo gem install $1
@@ -26,7 +25,7 @@ function toLower() {
 }
 
 # Execute getopt on the arguments passed to this program, identified by the special character $@
-PARSED_OPTIONS=$(getopt -n "$0"  -o hr:R:nxg: --long "help,ruby:,rails:,no-gems,vim-plugins,sample,gem:"  -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0"  -o hr:R:nsg: --long "help,ruby:,rails:,no-gems,vim-plugins,sample,gem:"  -- "$@")
  
 #Bad arguments, something has gone wrong with the getopt command.
 if [ $? -ne 0 ];
@@ -192,28 +191,35 @@ if [ $os == "linux" ]; then
     rvm pkg install openssl
 
 elif [ $os == "mac" ]; then
-    echo "Installing Homebrew ..."
-    ruby <(curl -fsS https://raw.github.com/mxcl/homebrew/go)
-    brew update
+    echo "Do you want to use Homebrew? [Y/n]"
+    read use_homebrew
 
-    # Putting Homebrew to PATH
-    echo "export PATH='/usr/local/bin:$PATH'" >> ~/.zshenv
-    source ~/.zshenv
+    if [[ $use_homebrew == "Y" || $use_homebrew == "y" || $use_homebrew == "" ]]; then
+        echo "Installing Homebrew ..."
+        ruby <(curl -fsS https://raw.github.com/mxcl/homebrew/go)
+        brew update
 
-    # Installing GNU compiler collection and dependencies
-    brew tap homebrew/dupes
-    brew install autoconf automake apple-gcc42
+        # Putting Homebrew to PATH
+        echo "export PATH='/usr/local/bin:$PATH'" >> ~/.zshenv
+        source ~/.zshenv
 
-    brew install libksba
+        # Installing GNU compiler collection and dependencies
+        brew tap homebrew/dupes
+        brew install autoconf automake apple-gcc42
 
-    # Install RVM
-    curl -L https://get.rvm.io | bash -s stable
+        brew install libksba
 
-    # Show RVM version
-    rvm --version
-    rvm use $ruby_v
-    rvm --default $ruby_v
-    rvm default 
+        # Install RVM
+        curl -L https://get.rvm.io | bash -s stable
+
+        # Use ruby version defined
+        rvm use $ruby_v
+        rvm --default $ruby_v
+        rvm default 
+    else
+        echo "Can't install Ruby on Rails without using Homebrew yet."
+        echo ""
+    fi
 
 fi
 # TODO: Generate scaffolding / bundle install, etc
@@ -232,11 +238,11 @@ if [[ $gems != false ]]; then
     installGems $gems
 fi
 
-if [[ install_sample == true ]]; then
+if [[ $install_sample == true ]]; then
     git clone https://github.com/Nearsoft/pawnil.git
-    bundle install --without production
-
     cd pawnil
+
+    bundle install --without production
     rake db:migrate
 
 fi
