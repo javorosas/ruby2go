@@ -2,15 +2,11 @@
 # Nearsoft, Inc.
 # Nearsoft Labs
 
-#####################################################
-#####################################################
 case $OSTYPE in
         darwin*)
-                # I'm a Mac!
                 os="mac"
         ;;
         linux-gnu)
-                # I'm linux!
                 os="linux"
         ;;
 esac
@@ -20,8 +16,25 @@ function installGems() {
     sudo gem install $1
 }
 
-function toLower() {
+function toLowerCase() {
     echo $1 | tr "[:upper:]" "[:lower:]"
+}
+
+# Checks if a command exits: Returns 1 if the command exits
+isInstalled(){
+    if type $1 > /dev/null 2>&1; then
+        echo "1"
+    else echo "0"
+    fi
+}
+
+# Function for required packages installation
+installPackage(){
+    check=$(isInstalled $1);
+    if [ $check == 0 ]; then
+            echo -e "Installing $1." 
+            $pack $1
+    fi
 }
 
 # Execute getopt on the arguments passed to this program, identified by the special character $@
@@ -41,7 +54,7 @@ install_sample=false
 ruby_v=1.9.3 # default ruby version
 
 # Now goes through all the options with a case and using shift to analyse 1 argument at a time.
-#$1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
+# $1 identifies the first argument, and when we use shift we discard the first argument, so $2 becomes $1 and goes again through the case.
 while true;
 do
     case "$1" in
@@ -103,10 +116,6 @@ do
     esac
 done
 
-#######################################################3
-#######################################################3
-
-
 # Make sure this script is not being executed as root
 if [ "$(id -u)" == "0" ]; then
    echo "Don't run this script as root." 1>&2
@@ -116,10 +125,7 @@ fi
 echo -e "\e[1;37mWelcome to Ruby2Go: The best way to install Ruby.\e[0m"    #Print logo
 
 if [ $os == "linux" ]; then
-    #########################################
-    ### Choose the proper package manager ###
-    #########################################
-
+    # Detect the proper package manager
     pkm_apt_binary="$(     builtin command -v apt-get )"
     pkm_emerge_binary="$(  builtin command -v emerge  )"
     pkm_pacman_binary="$(  builtin command -v pacman  )"
@@ -128,7 +134,6 @@ if [ $os == "linux" ]; then
     pkm_pkg_add_binary="$( builtin command -v pkg_add )"
 
     # Checks if evaluated package manager is installed
-
     if [[ -n "$pkm_apt_binary" ]]; then
         pack="sudo apt-get install -y"
         rvm_dependencies="build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config"
@@ -152,34 +157,10 @@ if [ $os == "linux" ]; then
         exit 2
     fi
 
-    ##################################################
-    ### Functions for installation of requirements ###
-    ##################################################
-
-    # Checks if a command exits: Returns 1 if the command exits
-    isInstalled(){
-        if type $1 > /dev/null 2>&1; then
-            echo "1"
-        else echo "0"
-        fi
-    }
-
-    install(){
-        check=$(isInstalled $1);
-        if [ $check == 0 ]; then
-                echo -e "Installing $1." #A little print
-                $pack $1
-        fi
-    }
-
-    ####################
-    ### Installation ###
-    ####################
-
-    install "curl"
-    install "git"
-
-    install "nodejs"
+    # Required packages
+    installPackage "curl"
+    installPackage "git"
+    installPackage "nodejs"
 
     # Install RVM with curl
     curl -L get.rvm.io | bash -s stable
@@ -222,12 +203,11 @@ elif [ $os == "mac" ]; then
     fi
 
 fi
-# TODO: Generate scaffolding / bundle install, etc
  
 rvm install $ruby_v --with-openssl-dir=$HOME/.rvm/usr
 rvm use $ruby_v --default
 
-rails=`toLower $rails`
+rails=`toLowerCase $rails`
 
 gems="execjs $gems"
 if [[ $rails != "no" ]]; then
@@ -244,9 +224,10 @@ if [[ $install_sample == true ]]; then
 
     bundle install --without production
     rake db:migrate
-
+    cd ..
+    echo "Now you can try the sample app by running \"rails s\" inside \"pawnil\" subfolder."
+    echo ""
 fi
 
-
-
-echo -e "Great, you've got everything installed. Happy Coding." #Print logo
+echo -e "Great, you've got everything installed. Happy Coding." 
+# TODO: Print logo
