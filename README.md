@@ -25,6 +25,5 @@ You can either execute this script as shown above to install the most common pac
 	 -R, --rails VERSION    Specify what version of Rails will be installed
 	 -r, --ruby VERSION     Specify what version of ruby will be installed
 	 -s, --sample           Download the sample app when installation is complete
-	     --vim-plugins      Install suggested vim plugins for Ruby on Rails development
 
 Welcome aboard and happy coding!
