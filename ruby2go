@@ -21,7 +21,7 @@ function toLowerCase() {
 }
 
 # Checks if a command exits: Returns 1 if the command exits
-isInstalled(){
+function isInstalled(){
     if type $1 > /dev/null 2>&1; then
         echo "1"
     else echo "0"
@@ -29,7 +29,7 @@ isInstalled(){
 }
 
 # Function for required packages installation
-installPackage(){
+function installPackage(){
     check=$(isInstalled $1);
     if [ $check == 0 ]; then
             echo -e "Installing $1." 
@@ -75,9 +75,7 @@ do
             echo " -n, --no-gems          Do not install any gem (nor rails)"
             echo " -R, --rails VERSION    Specify what version of Rails will be installed"
             echo " -r, --ruby VERSION     Specify what version of ruby will be installed"
-            echo " -s, --sample           Download the sample app when installation is complete"
-            echo "     --vim-plugins      Install suggested vim plugins for Ruby on Rails development"
-     
+            echo " -s, --sample           Download the sample app when installation is complete"     
 
             exit 1
             shift;; 
@@ -201,7 +199,6 @@ elif [ $os == "mac" ]; then
         echo "Can't install Ruby on Rails without using Homebrew yet."
         echo ""
     fi
-
 fi
  
 rvm install $ruby_v --with-openssl-dir=$HOME/.rvm/usr
@@ -210,6 +207,7 @@ rvm use $ruby_v --default
 rails=`toLowerCase $rails`
 
 gems="execjs $gems"
+
 if [[ $rails != "no" ]]; then
     gems="rails $gems"
 fi
