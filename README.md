@@ -8,8 +8,8 @@ To install Ruby + Rails environment, open your terminal and type the following:
 	
 	mkdir ruby2go
 	cd ruby2go
-	wget https://bitbucket.org/nslabs/ruby2go/downloads/ruby2go
-	sudo chmod +x ruby2go
+	wget https://raw.github.com/Nearsoft/ruby2go/master/ruby2go
+	chmod +x ruby2go
 	./ruby2go
 
 # Configure your installation
