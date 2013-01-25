@@ -12,6 +12,10 @@ To install Ruby + Rails environment, open your terminal and type the following:
 	chmod +x ruby2go
 	./ruby2go
 
+# Express installation
+You can also execute this script in one single line:
+	mkdir ruby2go && cd ruby2go && wget -O - https://raw.github.com/Nearsoft/ruby2go/master/ruby2go | bash
+
 # Configure your installation
 You can either execute this script as shown above to install the most common packages for your environment, or customize your installation typing the following options
 
