@@ -228,4 +228,5 @@ if [[ $install_sample == true ]]; then
 fi
 
 echo -e "Great, you've got everything installed. Happy Coding." 
+bash --login # needed for recently installed packages take effect
 # TODO: Print logo
